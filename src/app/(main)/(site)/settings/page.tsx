@@ -1,5 +1,6 @@
 import ProfileForm from "@/components/global/forms/profile-form";
 import React from "react";
+import ProfilePicture from "./components/profile-picture";
 
 type Props = {};
 
@@ -17,6 +18,11 @@ const Settings = (props: Props) => {
           </p>
         </div>
       </div>
+      {/* <ProfilePicture
+        onDelete={removeProfileImage}
+        userImage={user?.profileImage || ""}
+        onUpload={uploadProfileImage}
+      ></ProfilePicture> */}
       <ProfileForm />
     </div>
   );
