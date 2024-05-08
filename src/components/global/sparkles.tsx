@@ -1,11 +1,13 @@
 "use client";
+import type { NextPage } from "next";
 import React from "react";
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import type { Container, SingleOrMultiple } from "@tsparticles/engine";
+import type { Container, Engine } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
-import { cn } from "@/lib/utils";
+
 import { motion, useAnimation } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 type ParticlesProps = {
   id?: string;
@@ -157,7 +159,7 @@ export const SparklesCore = (props: ParticlesProps) => {
                 close: true,
                 fill: true,
                 options: {},
-                type: {} as SingleOrMultiple<string> | undefined,
+                type: {} as any,
               },
               groups: {},
               move: {
@@ -242,7 +244,7 @@ export const SparklesCore = (props: ParticlesProps) => {
                   enable: true,
                   speed: speed || 4,
                   decay: 0,
-                  delay: 0,
+                  delay: 2,
                   sync: false,
                   mode: "auto",
                   startValue: "random",
