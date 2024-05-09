@@ -12,13 +12,16 @@ import { Input } from "@/components/ui/input";
 import { EditUserProfileSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit, Loader2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-type Props = {};
+type Props = {
+  user: any;
+  onUpdate?: any;
+};
 
-function ProfileForm({}: Props) {
+function ProfileForm({ user, onUpdate }: Props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof EditUserProfileSchema>>({
@@ -30,9 +33,24 @@ function ProfileForm({}: Props) {
     },
   });
 
+  const handleSubmit = async (
+    values: z.infer<typeof EditUserProfileSchema>
+  ) => {
+    setIsLoading(true);
+    await onUpdate(values.name);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    form.reset({ name: user.name, email: user.email });
+  }, [user]);
+
   return (
     <Form {...form}>
-      <form className="flex flex-col ml-6 gap-6" onSubmit={() => {}}>
+      <form
+        className="flex flex-col ml-6 gap-6"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
         <FormField
           disabled={isLoading}
           control={form.control}
@@ -42,14 +60,14 @@ function ProfileForm({}: Props) {
               <FormLabel className="text-lg">User Name</FormLabel>
               <FormMessage>
                 <FormControl>
-                  <Input placeholder="Name" {...field} />
+                  <Input {...field} placeholder="Name" />
                 </FormControl>
               </FormMessage>
             </FormItem>
           )}
         />
         <FormField
-          disabled={isLoading || true}
+          disabled={isLoading}
           control={form.control}
           name="email"
           render={({ field }) => (
@@ -57,7 +75,12 @@ function ProfileForm({}: Props) {
               <FormLabel className="text-lg">Email</FormLabel>
               <FormMessage>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input
+                    {...field}
+                    disabled={true}
+                    placeholder="Email"
+                    type="email"
+                  />
                 </FormControl>
               </FormMessage>
             </FormItem>
